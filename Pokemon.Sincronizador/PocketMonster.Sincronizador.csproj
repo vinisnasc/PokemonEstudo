@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pokemon.Data\PocketMonster.Data.csproj" />
+    <ProjectReference Include="..\Pokemon.Model\PocketMonster.Model.csproj" />
+  </ItemGroup>
+
+</Project>
