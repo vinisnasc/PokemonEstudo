@@ -35,7 +35,7 @@ namespace PocketMonster.Sincronizador
             var endpoint = URL_POKEMON + count + "/";
             retornoTask = client.GetAsync(endpoint).Result;
 
-            while (/*retornoTask.IsSuccessStatusCode*/count < 6)
+            while (/*retornoTask.IsSuccessStatusCode*/count < 2)
             {
                 var contretorn = retornoTask.Content.ReadAsStringAsync();
                 var poskemon = JsonConvert.DeserializeObject<PokeDetailsViewModel>(contretorn.Result);

@@ -13,15 +13,15 @@ namespace PocketMonster.Data.Dao
 
         protected DaoBase()
         {
-            con = new SqlConnection(@"Data Source=DESKTOP-R9JFMSC\SQLEXPRESS;Initial Catalog=PocketMonster;Integrated Security=True;Connect Timeout=30");
+            con = new SqlConnection("Server=DESKTOP-R9JFMSC\\SQLEXPRESS;Database=PocketMonster;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
         protected async Task Insert(string comando)
         {
-            con.Open();
-            SqlCommand cmd = new(comando, con);
-            await cmd.ExecuteNonQueryAsync();
-            con.Close();
+                con.Open();
+                SqlCommand cmd = new(comando, con);
+                await cmd.ExecuteNonQueryAsync();
+                con.Close();
         }
 
         protected async Task Select(string comando, Action<SqlDataReader> tratamentoLeitura)
