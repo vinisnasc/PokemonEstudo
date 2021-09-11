@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pokemon.Model\PocketMonster.Model.csproj" />
+    <ProjectReference Include="..\Pokemon.Sincronizador\PocketMonster.Sincronizador.csproj" />
+  </ItemGroup>
+
 </Project>

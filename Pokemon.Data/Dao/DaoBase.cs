@@ -13,7 +13,7 @@ namespace PocketMonster.Data.Dao
 
         protected DaoBase()
         {
-            con = new SqlConnection("Server=DESKTOP-R9JFMSC\\SQLEXPRESS;Database=PocketMonster;Trusted_Connection=True;MultipleActiveResultSets=true");
+            con = new SqlConnection("Server=DESKTOP-R9JFMSC\\SQLEXPRESS;Database=PocketMonster;Integrated Security=True;Connect Timeout=30");
         }
 
         protected async Task Insert(string comando)

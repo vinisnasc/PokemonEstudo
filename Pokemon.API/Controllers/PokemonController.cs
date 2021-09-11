@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PocketMonster.Model.Interfaces.Services;
 using PocketMonster.Sincronizador;
 using System;
 using System.Collections.Generic;
@@ -13,43 +14,18 @@ namespace PocketMonster.API.Controllers
     [ApiController]
     public class PokemonController : ControllerBase
     {
-        private readonly SincronizadorService _ss;
-        public PokemonController()
+        private readonly ISincronizadorService _sincronizadorService;
+        public PokemonController(ISincronizadorService sincronizadorService)
         {
-            _ss = new SincronizadorService();
+            _sincronizadorService = sincronizadorService;
         }
-        // GET: api/<PokemonController>
-        [HttpGet]
+        
+
+        [HttpGet("Sincronizar tudo")]
         public async Task<IActionResult> Get()
         {
-            await _ss.Sincronizar();
+            await _sincronizadorService.Sincronizar();
             return Ok();
-        }
-
-        // GET api/<PokemonController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<PokemonController>
-        [HttpPost]
-        public void Post()
-        {
-            
-        }
-
-        // PUT api/<PokemonController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<PokemonController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

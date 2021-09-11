@@ -10,9 +10,7 @@ namespace PocketMonster.Sincronizador.ViewModels
     {
         public int id { get; set; }
         public List<Type> types { get; set; }
-        public string name { get; set; }
-        public string url { get; set; }
-        public string location_area_encounters { get; set; }
+        public Species species { get; set; }
     }
 
     public class Type
@@ -22,6 +20,12 @@ namespace PocketMonster.Sincronizador.ViewModels
     }
 
     public class Type2
+    {
+        public string name { get; set; }
+        public string url { get; set; }
+    }
+
+    public class Species
     {
         public string name { get; set; }
         public string url { get; set; }

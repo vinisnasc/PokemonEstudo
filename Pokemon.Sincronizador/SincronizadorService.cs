@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using PocketMonster.Data.Dao;
 using PocketMonster.Model;
+using PocketMonster.Model.Interfaces.Daos;
+using PocketMonster.Model.Interfaces.Services;
 using PocketMonster.Sincronizador.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,15 @@ using System.Threading.Tasks;
 
 namespace PocketMonster.Sincronizador
 {
-    public class SincronizadorService
+    public class SincronizadorService : ISincronizadorService
     {
         private const string URL_POKEMON = "https://pokeapi.co/api/v2/pokemon/";
+        private readonly IPokemonDao _pokemonDao;
+
+        public SincronizadorService(IPokemonDao pokemonDao)
+        {
+            _pokemonDao = pokemonDao;
+        }
 
         public async Task Sincronizar()
         {
@@ -35,10 +43,10 @@ namespace PocketMonster.Sincronizador
             var endpoint = URL_POKEMON + count + "/";
             retornoTask = client.GetAsync(endpoint).Result;
 
-            while (/*retornoTask.IsSuccessStatusCode*/count < 2)
+            while (retornoTask.IsSuccessStatusCode)
             {
-                var contretorn = retornoTask.Content.ReadAsStringAsync();
-                var poskemon = JsonConvert.DeserializeObject<PokeDetailsViewModel>(contretorn.Result);
+                var contretorn = await retornoTask.Content.ReadAsStringAsync();
+                var poskemon = JsonConvert.DeserializeObject<PokeDetailsViewModel>(contretorn);
                 lista.Add(poskemon);
                 count++;
                 endpoint = URL_POKEMON + count + "/";
@@ -50,7 +58,7 @@ namespace PocketMonster.Sincronizador
             {
                 Pokemon pokemon = new();
                 pokemon.IdPokemon = poke.id;
-                pokemon.Nome = poke.name;
+                pokemon.Nome = poke.species.name;
                 pokemon.Tipo1 = poke.types[0].type.name;
                 if (poke.types.Count == 2)
                     pokemon.Tipo2 = poke.types[1].type.name;
@@ -58,8 +66,7 @@ namespace PocketMonster.Sincronizador
                 listaPokemon.Add(pokemon);
             }
 
-            using (PokemonDao dao = new())
-                await dao.InserirPokemon(listaPokemon);
+            await _pokemonDao.InserirPokemon(listaPokemon);
         }
     }
 }
