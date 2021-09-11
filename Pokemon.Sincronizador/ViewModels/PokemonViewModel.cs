@@ -16,12 +16,12 @@ namespace PocketMonster.Sincronizador.ViewModels
         public string Url { get; set; }
         //public string Location_area_encounters { get; set; }
 
-        public class Type
-        {
-            public string Slot { get; set; }
-            [JsonProperty("type")]
-            public IReadOnlyList<string> Types { get; set; }
-        }
+        //public class Type
+        //{
+        //    public string Slot { get; set; }
+        //    [JsonProperty("type")]
+        //    public IReadOnlyList<string> Types { get; set; }
+        //}
 
         public int IdPokemon
         {
@@ -43,15 +43,15 @@ namespace PocketMonster.Sincronizador.ViewModels
         //}
     }
 
-    public class Types
-    {
-        public string Slot { get; set; }
-        public Type Type { get; set; }
-    }
+    //public class Types
+    //{
+    //    public string Slot { get; set; }
+    //    public Type Type { get; set; }
+    //}
 
-    public class Type
-    {
-        public string Name { get; set; }
-        public string Url { get; set; }
-    }
+    //public class Type
+    //{
+    //    public string Name { get; set; }
+    //    public string Url { get; set; }
+    //}
 }

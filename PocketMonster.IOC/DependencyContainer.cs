@@ -10,7 +10,7 @@ namespace PocketMonster.IOC
         {
             // Services
             //services.AddScoped<IDepartamentoService, DepartamentoService>();
-          
 
         }
+    }
 }

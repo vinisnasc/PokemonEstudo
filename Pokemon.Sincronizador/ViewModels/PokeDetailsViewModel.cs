@@ -6,10 +6,24 @@ using System.Threading.Tasks;
 
 namespace PocketMonster.Sincronizador.ViewModels
 {
-    class PokeDetailsViewModel
+    public class PokeDetailsViewModel
     {
-        public IReadOnlyList<string> Types { get; set; }
-        public string Url { get; set; }
-        public string Location_area_encounters { get; set; }
+        public int id { get; set; }
+        public List<Type> types { get; set; }
+        public string name { get; set; }
+        public string url { get; set; }
+        public string location_area_encounters { get; set; }
+    }
+
+    public class Type
+    {
+        public int slot { get; set; }
+        public Type2 type { get; set; }
+    }
+
+    public class Type2
+    {
+        public string name { get; set; }
+        public string url { get; set; }
     }
 }

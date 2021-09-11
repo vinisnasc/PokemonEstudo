@@ -1,4 +1,5 @@
-﻿using PocketMonster.Data.Dao;
+﻿using Newtonsoft.Json;
+using PocketMonster.Data.Dao;
 using PocketMonster.Model;
 using PocketMonster.Sincronizador.ViewModels;
 using System;
@@ -23,38 +24,42 @@ namespace PocketMonster.Sincronizador
 
         private async Task SincronizarPokemon()
         {
-            HttpClient httpClient = new();
-            List<PokemonViewModel> lista = new();
-            ResultadoAPI<PokemonViewModel> resultadoAPI = null;
 
-            int count = 0;
+            List<PokeDetailsViewModel> lista = new();
 
-            do
+            var handler = new HttpClientHandler();
+            var client = new HttpClient(handler);
+            var retornoTask = new HttpResponseMessage();
+
+            int count = 1;
+            var endpoint = URL_POKEMON + count + "/";
+            retornoTask = client.GetAsync(endpoint).Result;
+
+            while (/*retornoTask.IsSuccessStatusCode*/count < 6)
             {
-                resultadoAPI = await httpClient.GetFromJsonAsync<ResultadoAPI<PokemonViewModel>>(resultadoAPI?.Next ?? URL_POKEMON);
-                lista.AddRange(resultadoAPI.Results);
+                var contretorn = retornoTask.Content.ReadAsStringAsync();
+                var poskemon = JsonConvert.DeserializeObject<PokeDetailsViewModel>(contretorn.Result);
+                lista.Add(poskemon);
                 count++;
-            } while (count < 3);
+                endpoint = URL_POKEMON + count + "/";
+                retornoTask = client.GetAsync(endpoint).Result;
+            }
 
-            var pokemon = lista.Select(item => new Pokemon
+            List<Pokemon> listaPokemon = new();
+            foreach(var poke in lista)
             {
-                IdPokemon = item.IdPokemon,
-                Nome = item.Name,
-            }).ToList();
+                Pokemon pokemon = new();
+                pokemon.IdPokemon = poke.id;
+                pokemon.Nome = poke.name;
+                pokemon.Tipo1 = poke.types[0].type.name;
+                if (poke.types.Count == 2)
+                    pokemon.Tipo2 = poke.types[1].type.name;
 
-            int countt = 0;
-            ResultadoAPI<PokeDetailsViewModel> resultadoAPII = null;
-            List<PokeDetailsViewModel> lista2 = new();
-            while (countt < lista.Count)
-            {
-                HttpClient httpClient1 = new();
-                resultadoAPII = await httpClient1.GetFromJsonAsync<ResultadoAPI<PokeDetailsViewModel>>(lista[0].Url);
-                lista2.AddRange(resultadoAPII.Results);
-                count++;
+                listaPokemon.Add(pokemon);
             }
 
             using (PokemonDao dao = new())
-                await dao.InserirPokemon(pokemon);
+                await dao.InserirPokemon(listaPokemon);
         }
     }
 }
