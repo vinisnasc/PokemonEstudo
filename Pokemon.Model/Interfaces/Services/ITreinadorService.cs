@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace PocketMonster.Model.Interfaces.Services
 {
-    public interface ISincronizadorService
+    public interface ITreinadorService
     {
-        Task SincronizarPokemon();
-        Task SincronizarTreinadores(string endereco);
-        Task SincronizarGinasios(string endereco);
     }
 }

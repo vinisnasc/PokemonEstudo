@@ -12,19 +12,19 @@ namespace PocketMonster.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PokemonController : ControllerBase
+    public class SincronizadorController : ControllerBase
     {
         private readonly ISincronizadorService _sincronizadorService;
-        public PokemonController(ISincronizadorService sincronizadorService)
+        
+        public SincronizadorController(ISincronizadorService sincronizadorService)
         {
             _sincronizadorService = sincronizadorService;
         }
         
-
-        [HttpGet("Sincronizar tudo")]
+        [HttpGet("Sincronizar Pokemon")]
         public async Task<IActionResult> Get()
         {
-            await _sincronizadorService.Sincronizar();
+            await _sincronizadorService.SincronizarPokemon();
             return Ok();
         }
     }

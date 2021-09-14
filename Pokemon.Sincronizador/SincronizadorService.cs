@@ -1,14 +1,12 @@
 ﻿using Newtonsoft.Json;
-using PocketMonster.Data.Dao;
-using PocketMonster.Model;
-using PocketMonster.Model.Interfaces.Daos;
+using PocketMonster.Model.Entities;
+using PocketMonster.Model.Interfaces.Repository;
 using PocketMonster.Model.Interfaces.Services;
 using PocketMonster.Sincronizador.ViewModels;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace PocketMonster.Sincronizador
@@ -16,21 +14,14 @@ namespace PocketMonster.Sincronizador
     public class SincronizadorService : ISincronizadorService
     {
         private const string URL_POKEMON = "https://pokeapi.co/api/v2/pokemon/";
-        private readonly IPokemonDao _pokemonDao;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public SincronizadorService(IPokemonDao pokemonDao)
+        public SincronizadorService(IUnitOfWork unitOfWork)
         {
-            _pokemonDao = pokemonDao;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task Sincronizar()
-        {
-            List<Task> tasks = new();
-
-            await SincronizarPokemon();
-        }
-
-        private async Task SincronizarPokemon()
+        public async Task SincronizarPokemon()
         {
 
             List<PokeDetailsViewModel> lista = new();
@@ -47,26 +38,85 @@ namespace PocketMonster.Sincronizador
             {
                 var contretorn = await retornoTask.Content.ReadAsStringAsync();
                 var poskemon = JsonConvert.DeserializeObject<PokeDetailsViewModel>(contretorn);
-                lista.Add(poskemon);
+                var poskemonCompare = await _unitOfWork.PokemonRepository.SelecionarPorPokedex(poskemon.id);
+                if (poskemonCompare == null)
+                {
+                    Pokemon novoPoke = new();
+                    novoPoke.RegistroPokedex = poskemon.id;
+                    novoPoke.Nome = poskemon.species.name;
+                    novoPoke.Tipo1 = poskemon.types[0].type.name;
+                    if (poskemon.types.Count == 2)
+                        novoPoke.Tipo2 = poskemon.types[1].type.name;
+                    await _unitOfWork.PokemonRepository.Incluir(novoPoke);
+                }
+                else
+                {
+                    poskemonCompare.Nome = poskemon.species.name;
+                    poskemonCompare.RegistroPokedex = poskemon.id;
+                    poskemonCompare.Tipo1 = poskemon.types[0].type.name;
+                    if (poskemon.types.Count == 2)
+                        poskemonCompare.Tipo2 = poskemon.types[1].type.name;
+                    await _unitOfWork.PokemonRepository.Alterar(poskemonCompare);
+                }
                 count++;
                 endpoint = URL_POKEMON + count + "/";
                 retornoTask = client.GetAsync(endpoint).Result;
             }
+        }
 
-            List<Pokemon> listaPokemon = new();
-            foreach(var poke in lista)
+        public async Task SincronizarTreinadores(string endereco)
+        {
+            string[] lines = File.ReadAllLines(endereco);
+
+            using (FileStream fs = new(endereco, FileMode.Open))
             {
-                Pokemon pokemon = new();
-                pokemon.IdPokemon = poke.id;
-                pokemon.Nome = poke.species.name;
-                pokemon.Tipo1 = poke.types[0].type.name;
-                if (poke.types.Count == 2)
-                    pokemon.Tipo2 = poke.types[1].type.name;
+                using (StreamReader sr = new(fs))
+                {
+                    foreach (string linha in lines)
+                    {
+                        string[] separadorLinha = linha.Split(",");
+                        Treinador validador = await _unitOfWork.TreinadorRepository.ProcurarPorNome(separadorLinha[0].Trim().ToLower());
 
-                listaPokemon.Add(pokemon);
+                        if (validador == null)
+                        {
+                            Treinador t = new();
+                            t.Nome = separadorLinha[0].Trim().ToLower();
+                            for (int i = 1; i < separadorLinha.Count(); i++)
+                            {
+                                Pokemon poke = await _unitOfWork.PokemonRepository.ProcurarPorNome(separadorLinha[i].Trim().ToLower());
+                                t.Pokemons.Add(poke);
+                            }
+                            await _unitOfWork.TreinadorRepository.Incluir(t);
+                        }
+                    }
+                }
             }
+        }
 
-            await _pokemonDao.InserirPokemon(listaPokemon);
+        public async Task SincronizarGinasios(string endereco)
+        {
+            string[] lines = File.ReadAllLines(endereco);
+
+            using (FileStream fs = new(endereco, FileMode.Open))
+            {
+                using (StreamReader sr = new(fs))
+                {
+                    foreach (string linha in lines)
+                    {
+                        string[] separadorLinha = linha.Split(",");
+                        Ginasio validador = await _unitOfWork.GinasioRepository.ProcurarPorNome(separadorLinha[0].Trim().ToLower());
+
+                        if (validador == null)
+                        {
+                            Ginasio g = new();
+                            g.Cidade = separadorLinha[0].Trim().ToLower();
+                            g.GymTipo = separadorLinha[1].Trim().ToLower();
+                            g.GymLider = await _unitOfWork.TreinadorRepository.ProcurarPorNome(separadorLinha[2].Trim().ToLower());
+                            await _unitOfWork.GinasioRepository.Incluir(g);
+                        }
+                    }
+                }
+            }
         }
     }
 }

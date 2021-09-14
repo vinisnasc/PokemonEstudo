@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PocketMonster.Data.Dao;
-using PocketMonster.Model.Interfaces.Daos;
+using PocketMonster.Data.ContextDB;
+using PocketMonster.Data.Repository;
+using PocketMonster.Model.Interfaces.Repository;
 using PocketMonster.Model.Interfaces.Services;
+using PocketMonster.Service;
 using PocketMonster.Sincronizador;
 using System;
 
@@ -12,11 +15,23 @@ namespace PocketMonster.IOC
     {
         public static void RegisterServices(IServiceCollection services, string connectionString, IConfiguration configuration)
         {
+            // Context 
+            services.AddDbContext<Context>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
+
             // Services
             services.AddScoped<ISincronizadorService, SincronizadorService>();
+            services.AddScoped<ITreinadorService, TreinadorService>();
 
-            // Daos
-            services.AddScoped<IPokemonDao, PokemonDao>();
+            // Repository
+            services.AddScoped<IPokemonRepository, PokemonRepository>();
+            services.AddScoped<ITreinadorRepository, TreinadorRepository>();
+            services.AddScoped<IGinasioRepository, GinasioRepository>();
+
+            // Unit of work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

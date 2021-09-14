@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PocketMonster.Model.Interfaces.Daos
+namespace PocketMonster.Model.Interfaces
 {
-    public interface IPokemonDao
+    public interface IEntity
     {
-        Task InserirPokemon(List<Pokemon> pokemon);
+        public Guid Id { get; set; }
     }
 }

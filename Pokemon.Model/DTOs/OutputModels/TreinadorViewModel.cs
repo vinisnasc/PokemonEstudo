@@ -1,12 +1,9 @@
-﻿using System;
+﻿using PocketMonster.Model.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PocketMonster.Model
+namespace PocketMonster.Model.DTOs.OutputModels
 {
-    public class Treinador
+    public class TreinadorViewModel
     {
         public int IdTreinador { get; set; }
         public string Nome { get; set; }

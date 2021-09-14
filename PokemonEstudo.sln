@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.Sincronizador
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.Data", "Pokemon.Data\PocketMonster.Data.csproj", "{5BA9DF53-1E0A-4965-A2EB-09DF43386066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketMonster.IOC", "PocketMonster.IOC\PocketMonster.IOC.csproj", "{D0C152D9-982D-4839-A6E0-660C5314F3CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.IOC", "PocketMonster.IOC\PocketMonster.IOC.csproj", "{D0C152D9-982D-4839-A6E0-660C5314F3CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketMonster.Service", "PocketMonster.Service\PocketMonster.Service.csproj", "{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D0C152D9-982D-4839-A6E0-660C5314F3CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0C152D9-982D-4839-A6E0-660C5314F3CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0C152D9-982D-4839-A6E0-660C5314F3CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
