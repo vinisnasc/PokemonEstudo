@@ -59,12 +59,7 @@ namespace PocketMonster.Data.Migrations
                     b.Property<string>("Tipo2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TreinadorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TreinadorId");
 
                     b.ToTable("Pokemon");
                 });
@@ -110,13 +105,6 @@ namespace PocketMonster.Data.Migrations
                     b.Navigation("GymLider");
                 });
 
-            modelBuilder.Entity("PocketMonster.Model.Entities.Pokemon", b =>
-                {
-                    b.HasOne("PocketMonster.Model.Entities.Treinador", null)
-                        .WithMany("Pokemons")
-                        .HasForeignKey("TreinadorId");
-                });
-
             modelBuilder.Entity("PocketMonster.Model.Entities.PokemonTreinador", b =>
                 {
                     b.HasOne("PocketMonster.Model.Entities.Pokemon", "Pokemon")
@@ -126,7 +114,7 @@ namespace PocketMonster.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("PocketMonster.Model.Entities.Treinador", "Treinador")
-                        .WithMany("PokemonTreinador")
+                        .WithMany("PokemonCapturados")
                         .HasForeignKey("IdTreinador")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -143,9 +131,7 @@ namespace PocketMonster.Data.Migrations
 
             modelBuilder.Entity("PocketMonster.Model.Entities.Treinador", b =>
                 {
-                    b.Navigation("Pokemons");
-
-                    b.Navigation("PokemonTreinador");
+                    b.Navigation("PokemonCapturados");
                 });
 #pragma warning restore 612, 618
         }

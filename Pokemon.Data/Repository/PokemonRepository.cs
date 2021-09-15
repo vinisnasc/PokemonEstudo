@@ -39,5 +39,14 @@ namespace PocketMonster.Data.Repository
             return await _context.Pokemon.FirstOrDefaultAsync(x => x.Nome == nome);
         }
 
+        public async Task<List<Pokemon>> ListarPokemon(int pagina, int quantidade)
+        {
+            return await Task.FromResult(_context.Pokemon.Skip((pagina - 1) * quantidade).Take(quantidade).ToList());
+        }
+
+        public async Task<List<Pokemon>> ListarPokemonPorTipo(string tipo)
+        {
+            return await _context.Pokemon.Where(x => x.Tipo1 == tipo || x.Tipo2 == tipo).ToListAsync();
+        }
     }
 }

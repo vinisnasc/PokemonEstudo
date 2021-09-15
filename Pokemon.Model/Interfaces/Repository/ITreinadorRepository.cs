@@ -11,5 +11,9 @@ namespace PocketMonster.Model.Interfaces.Repository
     {
         Task<bool> Incluir(Treinador treinador);
         Task<Treinador> ProcurarPorNome(string nome);
+        Task<int> QuantidadeTipoPokemon(string tipo, string nome);
+        Task<bool> Alterar(Treinador treinador);
+        Task<List<Treinador>> SelecionarTudo();
+        Task<Treinador> SelecionarPorId(Guid id);
     }
 }

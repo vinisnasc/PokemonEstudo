@@ -27,5 +27,15 @@ namespace PocketMonster.Data.Repository
         {
             return await _context.Ginasios.FirstOrDefaultAsync(x => x.Cidade == nome);
         }
+
+        public async Task<bool> VerificarTreinadorLider(Treinador treinador)
+        {
+            return await _context.Ginasios.AnyAsync(x => x.GymLider == treinador);
+        }
+
+        public override async Task<bool> Alterar(Ginasio gym)
+        {
+            return await base.Alterar(gym);
+        }
     }
 }

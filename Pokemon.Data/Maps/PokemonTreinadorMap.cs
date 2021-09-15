@@ -22,7 +22,7 @@ namespace PocketMonster.Data.Maps
                    .HasForeignKey(k => k.IdPokemon);
 
             builder.HasOne<Treinador>(p => p.Treinador)
-                   .WithMany(d => d.PokemonTreinador)
+                   .WithMany(d => d.PokemonCapturados)
                    .HasForeignKey(k => k.IdTreinador);
         }
     }

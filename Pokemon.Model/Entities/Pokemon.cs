@@ -11,7 +11,7 @@ namespace PocketMonster.Model.Entities
         public int RegistroPokedex { get; set; }
         public string Nome { get; set; }
         public string Tipo1 { get; set; }
-        public string Tipo2 { get; set; }
-        public List<PokemonTreinador> PokemonTreinador { get; set; }
+        public string? Tipo2 { get; set; }
+        public List<PokemonTreinador> PokemonTreinador { get; set; } = new();
     }
 }

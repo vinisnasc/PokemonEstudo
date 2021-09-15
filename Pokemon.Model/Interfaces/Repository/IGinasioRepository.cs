@@ -11,5 +11,7 @@ namespace PocketMonster.Model.Interfaces.Repository
     {
         Task<bool> Incluir(Ginasio gym);
         Task<Ginasio> ProcurarPorNome(string nome);
+        Task<bool> VerificarTreinadorLider(Treinador treinador);
+        Task<bool> Alterar(Ginasio gym);
     }
 }

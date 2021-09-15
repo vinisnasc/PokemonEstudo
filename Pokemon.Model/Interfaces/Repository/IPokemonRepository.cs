@@ -13,5 +13,7 @@ namespace PocketMonster.Model.Interfaces.Repository
         Task<Pokemon> SelecionarPorPokedex(int id);
         Task<bool> Alterar(Pokemon pokemon);
         Task<Pokemon> ProcurarPorNome(string nome);
+        Task<List<Pokemon>> ListarPokemon(int pagina, int quantidade);
+        Task<List<Pokemon>> ListarPokemonPorTipo(string tipo);
     }
 }

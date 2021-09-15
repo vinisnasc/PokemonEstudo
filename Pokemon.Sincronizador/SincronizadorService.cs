@@ -3,6 +3,7 @@ using PocketMonster.Model.Entities;
 using PocketMonster.Model.Interfaces.Repository;
 using PocketMonster.Model.Interfaces.Services;
 using PocketMonster.Sincronizador.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace PocketMonster.Sincronizador
                 var contretorn = await retornoTask.Content.ReadAsStringAsync();
                 var poskemon = JsonConvert.DeserializeObject<PokeDetailsViewModel>(contretorn);
                 var poskemonCompare = await _unitOfWork.PokemonRepository.SelecionarPorPokedex(poskemon.id);
+
                 if (poskemonCompare == null)
                 {
                     Pokemon novoPoke = new();
@@ -49,15 +51,7 @@ namespace PocketMonster.Sincronizador
                         novoPoke.Tipo2 = poskemon.types[1].type.name;
                     await _unitOfWork.PokemonRepository.Incluir(novoPoke);
                 }
-                else
-                {
-                    poskemonCompare.Nome = poskemon.species.name;
-                    poskemonCompare.RegistroPokedex = poskemon.id;
-                    poskemonCompare.Tipo1 = poskemon.types[0].type.name;
-                    if (poskemon.types.Count == 2)
-                        poskemonCompare.Tipo2 = poskemon.types[1].type.name;
-                    await _unitOfWork.PokemonRepository.Alterar(poskemonCompare);
-                }
+
                 count++;
                 endpoint = URL_POKEMON + count + "/";
                 retornoTask = client.GetAsync(endpoint).Result;
@@ -80,13 +74,40 @@ namespace PocketMonster.Sincronizador
                         if (validador == null)
                         {
                             Treinador t = new();
+                            t.Id = Guid.NewGuid();
                             t.Nome = separadorLinha[0].Trim().ToLower();
+                            t.PokemonCapturados = new List<PokemonTreinador>();
                             for (int i = 1; i < separadorLinha.Count(); i++)
                             {
                                 Pokemon poke = await _unitOfWork.PokemonRepository.ProcurarPorNome(separadorLinha[i].Trim().ToLower());
-                                t.Pokemons.Add(poke);
+                                PokemonTreinador pk = new()
+                                {
+                                    IdPokemon = poke.Id
+                                };
+
+                                bool existe = validador.PokemonCapturados.Exists(x => x.Pokemon == poke);
+                                if (existe == true)
+                                    t.PokemonCapturados.Add(pk);
                             }
                             await _unitOfWork.TreinadorRepository.Incluir(t);
+                        }
+                        else
+                        {
+                            for (int i = 1; i < separadorLinha.Count(); i++)
+                            {
+                                Pokemon poke = await _unitOfWork.PokemonRepository.ProcurarPorNome(separadorLinha[i].Trim().ToLower());
+                                bool existe = validador.PokemonCapturados.Exists(x => x.Pokemon == poke);
+
+                                if (!existe)
+                                {
+                                    PokemonTreinador pk = new()
+                                    {
+                                        IdPokemon = poke.Id
+                                    };
+                                    validador.PokemonCapturados.Add(pk);
+                                }
+                                await _unitOfWork.TreinadorRepository.Alterar(validador);
+                            }
                         }
                     }
                 }
@@ -105,14 +126,33 @@ namespace PocketMonster.Sincronizador
                     {
                         string[] separadorLinha = linha.Split(",");
                         Ginasio validador = await _unitOfWork.GinasioRepository.ProcurarPorNome(separadorLinha[0].Trim().ToLower());
+                        Treinador t = await _unitOfWork.TreinadorRepository.ProcurarPorNome(separadorLinha[2].Trim().ToLower());
+                        string tipo = separadorLinha[1].Trim().ToLower();
 
                         if (validador == null)
                         {
-                            Ginasio g = new();
-                            g.Cidade = separadorLinha[0].Trim().ToLower();
-                            g.GymTipo = separadorLinha[1].Trim().ToLower();
-                            g.GymLider = await _unitOfWork.TreinadorRepository.ProcurarPorNome(separadorLinha[2].Trim().ToLower());
-                            await _unitOfWork.GinasioRepository.Incluir(g);
+                            if (!await _unitOfWork.GinasioRepository.VerificarTreinadorLider(t))
+                            {
+                                if (await _unitOfWork.TreinadorRepository.QuantidadeTipoPokemon(tipo, t.Nome) > 5)
+                                {
+                                    Ginasio g = new();
+                                    g.Cidade = separadorLinha[0].Trim().ToLower();
+                                    g.GymTipo = tipo;
+                                    g.GymLider = t;
+                                    await _unitOfWork.GinasioRepository.Incluir(g);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (!await _unitOfWork.GinasioRepository.VerificarTreinadorLider(t))
+                            {
+                                if (await _unitOfWork.TreinadorRepository.QuantidadeTipoPokemon(tipo, t.Nome) > 5)
+                                {
+                                    validador.GymLider = t;
+                                    await _unitOfWork.GinasioRepository.Alterar(validador);
+                                }
+                            }
                         }
                     }
                 }
