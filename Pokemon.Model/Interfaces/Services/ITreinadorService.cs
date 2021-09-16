@@ -14,5 +14,7 @@ namespace PocketMonster.Model.Interfaces.Services
         Task<TreinadorViewModel> ProcurarPorId(Guid id);
         Task<TreinadorViewModel> ProcurarPorNome(string nome);
         Task<TreinadorViewModel> CadastrarTreinador(TreinadorInputModel dto);
+        Task<TreinadorViewModel> CapturarPokemon(Guid id, string pokemon);
+        Task<TreinadorViewModel> LibertaPokemon(Guid id, string pokeNome);
     }
 }

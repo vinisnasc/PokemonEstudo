@@ -69,15 +69,60 @@ namespace PocketMonster.API.Controllers
             return Ok(treinador);
         }
 
+        /// <summary>
+        /// Cadastra um novo treinador
+        /// </summary>
+        /// <param name="dto">Nome do treinador</param>
+        /// <returns></returns>
         [HttpPost("CadastrarTreinador")]
         public async Task<ActionResult<TreinadorViewModel>> CadastrarTreinador([FromQuery] TreinadorInputModel dto)
         {
             try
             {
-                await _treinadorService.CadastrarTreinador(dto);
-                return Ok();
+                var t = await _treinadorService.CadastrarTreinador(dto);
+                return Ok(t);
             }
             catch (TreinadorJaExisteException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Adiciona um novo pokemon ao treinador
+        /// </summary>
+        /// <param name="id">id do treinador</param>
+        /// <param name="pokeNome">Nome do pokemon</param>
+        /// <returns></returns>
+        [HttpPut("AdicionaUmPokemonAoTreinador")]
+        public async Task<ActionResult<TreinadorViewModel>> AdicionarPoke([FromQuery] Guid id, string pokeNome)
+        {
+            try
+            {
+                var t = await _treinadorService.CapturarPokemon(id, pokeNome);
+                return Ok(t);
+            }
+            catch (TreinadorNaoExisteException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Remove um pokemon do treinador
+        /// </summary>
+        /// <param name="id">id do treinador</param>
+        /// <param name="pokeNome">Nome do pokemon</param>
+        /// <returns></returns>
+        [HttpPut("LiberaUmPokemon")]
+        public async Task<ActionResult<TreinadorViewModel>> LibertaPoke([FromQuery] Guid id, string pokeNome)
+        {
+            try
+            {
+                var t = await _treinadorService.LibertaPokemon(id, pokeNome);
+                return Ok(t);
+            }
+            catch (TreinadorNaoExisteException e)
             {
                 return BadRequest(e.Message);
             }

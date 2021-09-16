@@ -25,6 +25,7 @@ namespace PocketMonster.IOC
             services.AddScoped<ISincronizadorService, SincronizadorService>();
             services.AddScoped<ITreinadorService, TreinadorService>();
             services.AddScoped<IPokemonService, PokemonService>();
+            services.AddScoped<IGinasioService, GinasioService>();
 
             // Repository
             services.AddScoped<IPokemonRepository, PokemonRepository>();
