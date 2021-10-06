@@ -48,5 +48,14 @@ namespace PocketMonster.Data.Repository
         {
             return await _context.Pokemon.Where(x => x.Tipo1 == tipo || x.Tipo2 == tipo).ToListAsync();
         }
+
+        public async Task IncluirVarios(List<Pokemon> list)
+        {
+            foreach ( Pokemon p in list)
+            {
+                contexto.Set<Pokemon>().Add(p);
+            }
+            await contexto.SaveChangesAsync();
+        }
     }
 }

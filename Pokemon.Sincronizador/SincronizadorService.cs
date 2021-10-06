@@ -24,7 +24,7 @@ namespace PocketMonster.Sincronizador
 
         public async Task SincronizarPokemon()
         {
-
+            List<Pokemon> pokeLista = new();
             List<PokeDetailsViewModel> lista = new();
 
             var handler = new HttpClientHandler();
@@ -49,13 +49,14 @@ namespace PocketMonster.Sincronizador
                     novoPoke.Tipo1 = poskemon.types[0].type.name;
                     if (poskemon.types.Count == 2)
                         novoPoke.Tipo2 = poskemon.types[1].type.name;
-                    await _unitOfWork.PokemonRepository.Incluir(novoPoke);
+                    pokeLista.Add(novoPoke);
                 }
 
                 count++;
                 endpoint = URL_POKEMON + count + "/";
                 retornoTask = client.GetAsync(endpoint).Result;
             }
+            await _unitOfWork.PokemonRepository.IncluirVarios(pokeLista);
         }
 
         public async Task SincronizarTreinadores(string endereco)

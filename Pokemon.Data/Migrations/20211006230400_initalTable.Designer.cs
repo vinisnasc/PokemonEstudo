@@ -10,8 +10,8 @@ using PocketMonster.Data.ContextDB;
 namespace PocketMonster.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210914202451_tabelaInicial")]
-    partial class tabelaInicial
+    [Migration("20211006230400_initalTable")]
+    partial class initalTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

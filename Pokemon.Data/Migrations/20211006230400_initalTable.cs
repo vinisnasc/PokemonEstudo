@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PocketMonster.Data.Migrations
 {
-    public partial class tabelaInicial : Migration
+    public partial class initalTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
