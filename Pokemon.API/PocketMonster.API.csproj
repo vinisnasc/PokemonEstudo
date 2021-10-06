@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PocketMonster.IOC\PocketMonster.IOC.csproj" />
-    <ProjectReference Include="..\Pokemon.Sincronizador\PocketMonster.Sincronizador.csproj" />
+    <ProjectReference Include="..\Pokemon.Sincronizador\PocketMonster.SincronizadorService.csproj" />
   </ItemGroup>
 
 </Project>
