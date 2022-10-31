@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PocketMonster.Model.DTOs.InputModels;
 using PocketMonster.Model.DTOs.OutputModels;
@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace PocketMonster.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class GinasioController : ControllerBase
     {

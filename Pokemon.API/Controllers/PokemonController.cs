@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PocketMonster.Model.DTOs.OutputModels;
-using PocketMonster.Model.Exceptions;
 using PocketMonster.Model.Interfaces.Services;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 namespace PocketMonster.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PokemonController : ControllerBase
     {

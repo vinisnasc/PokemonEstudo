@@ -15,7 +15,7 @@ namespace PocketMonster.Data.ContextDB
                                 .Build();
 
             var dbContextBuilder = new DbContextOptionsBuilder<Context>();
-            var connectionString = configuration.GetConnectionString("SQL");
+            var connectionString = "Server=DESKTOP-R9JFMSC\\SQLEXPRESS;Database=PKMNDataBase;Integrated Security=True;Connect Timeout=30";
             dbContextBuilder.UseSqlServer(connectionString);
 
             return new Context(dbContextBuilder.Options);
