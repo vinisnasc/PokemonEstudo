@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PocketMonster.API.Extensoes;
 using PocketMonster.Model.DTOs.InputModels;
 using PocketMonster.Model.DTOs.OutputModels;
 using PocketMonster.Model.Exceptions;
@@ -28,6 +29,7 @@ namespace PocketMonster.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("ListarTodosGinasios")]
+        [ClaimsAuthorize("Ginasio", "listar")]
         public async Task<ActionResult<IEnumerable<GinasioViewModel>>> ListarGinasios()
         {
             var treinadores = await _ginasioService.ListarGinasios();
@@ -43,6 +45,7 @@ namespace PocketMonster.API.Controllers
         /// </summary>
         /// <param name="id">Id do ginasio</param>
         /// <returns></returns>
+        [ClaimsAuthorize("Ginasio", "leitura")]
         [HttpGet("ProcurarPorId")]
         public async Task<ActionResult<GinasioViewModel>> ProcurarPorId(Guid id)
         {
@@ -63,6 +66,7 @@ namespace PocketMonster.API.Controllers
         /// <param name="nome">nome do ginasio</param>
         /// <returns></returns>
         [HttpGet("ProcurarPorNome")]
+        [ClaimsAuthorize("Ginasio", "leitura")]
         public async Task<ActionResult<GinasioViewModel>> ProcurarPorNome(string nome)
         {
             try
@@ -82,6 +86,7 @@ namespace PocketMonster.API.Controllers
         /// <param name="dto">dados do ginasio, utilizar ingles no tipo</param>
         /// <returns></returns>
         [HttpPost("CriarNovoGinasio")]
+        [ClaimsAuthorize("Ginasio", "adicionar")]
         public async Task<ActionResult<GinasioViewModel>> CadastrarGinasio([FromQuery]GinasioInputModel dto)
         {
             try
