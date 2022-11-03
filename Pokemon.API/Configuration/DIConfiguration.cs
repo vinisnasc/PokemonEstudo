@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PocketMonster.API.Extensoes;
 using PocketMonster.Data.ContextDB;
 using PocketMonster.Data.Repository;
 using PocketMonster.Model.Interfaces;
@@ -10,16 +11,16 @@ using PocketMonster.Model.Interfaces.Services;
 using PocketMonster.Service;
 using PocketMonster.Sincronizador;
 
-namespace PocketMonster.IOC
+namespace PocketMonster.API.Configuration
 {
-    public class DependencyContainer
+    public static class DIConfiguration
     {
-        public static void RegisterServices(IServiceCollection services, string connectionString, IConfiguration configuration)
+        public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Context 
             services.AddDbContext<Context>(options =>
             {
-                options.UseSqlServer(connectionString);
+                options.UseSqlServer(configuration.GetConnectionString("SQL"));
             });
 
             // Services
@@ -39,6 +40,8 @@ namespace PocketMonster.IOC
             // Identity Extension
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
+
+            return services;
         }
     }
 }

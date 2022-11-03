@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PocketMonster.API.Configuration;
-using PocketMonster.IOC;
 using System;
 using System.IO;
 using System.Reflection;
@@ -17,11 +16,6 @@ namespace PocketMonster.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
-
-        private void RegisterServices(IServiceCollection services)
-        {
-            DependencyContainer.RegisterServices(services, Configuration.GetConnectionString("SQL"), Configuration);
         }
 
         public IConfiguration Configuration { get; }
@@ -38,10 +32,9 @@ namespace PocketMonster.API
                 c.IncludeXmlComments(xmlPath);
             });
             services.AddIdentityConfig(Configuration);
-            RegisterServices(services);
+            services.RegisterServices(Configuration);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

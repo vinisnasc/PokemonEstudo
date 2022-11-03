@@ -4,6 +4,7 @@ using PocketMonster.API.Extensoes;
 using PocketMonster.Model.DTOs.InputModels;
 using PocketMonster.Model.DTOs.OutputModels;
 using PocketMonster.Model.Exceptions;
+using PocketMonster.Model.Interfaces;
 using PocketMonster.Model.Interfaces.Services;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,21 @@ namespace PocketMonster.API.Controllers
     public class GinasioController : ControllerBase
     {
         private readonly IGinasioService _ginasioService;
+        public readonly IUser UserApp;
 
-        public GinasioController(IGinasioService ginasioService)
+        protected Guid UsuarioId { get; set; }
+        protected bool UsuarioAutenticado { get; set; }
+
+        public GinasioController(IGinasioService ginasioService, IUser userApp)
         {
             _ginasioService = ginasioService;
+            UserApp = userApp;
+
+            if (UserApp.IsAuthenticated())
+            {
+                UsuarioId = userApp.GetUserId();
+                UsuarioAutenticado = true;
+            }
         }
 
         /// <summary>

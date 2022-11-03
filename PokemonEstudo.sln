@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.API", "Pokemon.API\PocketMonster.API.csproj", "{DA243AEC-0391-4B27-B4B7-472F12370761}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.SincronizadorService", "Pokemon.Sincronizador\PocketMonster.SincronizadorService.csproj", "{200D9BED-F1E8-4D74-B2A2-28BB4EA53A84}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.Data", "Pokemon.Data\PocketMonster.Data.csproj", "{5BA9DF53-1E0A-4965-A2EB-09DF43386066}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.IOC", "PocketMonster.IOC\PocketMonster.IOC.csproj", "{D0C152D9-982D-4839-A6E0-660C5314F3CE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketMonster.Service", "PocketMonster.Service\PocketMonster.Service.csproj", "{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}"
 EndProject
@@ -37,10 +35,6 @@ Global
 		{5BA9DF53-1E0A-4965-A2EB-09DF43386066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BA9DF53-1E0A-4965-A2EB-09DF43386066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BA9DF53-1E0A-4965-A2EB-09DF43386066}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0C152D9-982D-4839-A6E0-660C5314F3CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0C152D9-982D-4839-A6E0-660C5314F3CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0C152D9-982D-4839-A6E0-660C5314F3CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0C152D9-982D-4839-A6E0-660C5314F3CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0F6AA79-4FF6-46AF-A613-8D53A12DAAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
